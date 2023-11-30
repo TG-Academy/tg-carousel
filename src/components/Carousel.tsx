@@ -1,7 +1,7 @@
 import React from "react";
-//import styles from "./style.module.css";
 import CarouselSlide from "./CarouselSlide";
 import CarouselButton, { CarouselButtonProps } from "./CarouselButton";
+import "./style.css";
 
 export interface CarouselProps extends React.HTMLAttributes<HTMLDivElement> {
   options?: CarouselOptions;
@@ -64,13 +64,13 @@ export default function Carousel({ children, options, ...props }: CarouselProps)
     <div /*className={styles.carousel}*/ {...props}>
       <div
         ref={slides}
-        // className={styles.slides}
+        className="slides"
         style={{ gap: `${options?.spacing}px` }}
       >
         {pages.map((page, index) => (
           <div
             key={index}
-            // className={styles.page}
+            className="page"
             style={{
               gap: `${options?.spacing}px`,
               justifyContent: options?.justifyContent,

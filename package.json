@@ -5,6 +5,9 @@
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "exports": {
+    "./css": "./dist/style.css"
+  },
   "files": [
     "dist"
   ],
@@ -12,12 +15,9 @@
     "access": "public"
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "vite playground",
     "build": "tsc && vite build",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "author": "Manssif Abdeldjalil Boutebina",
   "license": "ISC",
@@ -25,6 +25,12 @@
     "@types/node": "^20.10.1",
     "@types/react": "^18.2.39",
     "@types/react-dom": "^18",
+    "@typescript-eslint/eslint-plugin": "^6.13.1",
+    "@typescript-eslint/parser": "^6.13.1",
+    "@vitejs/plugin-react": "^4.2.0",
+    "eslint": "^8.54.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "rollup-plugin-postcss": "^4.0.2",

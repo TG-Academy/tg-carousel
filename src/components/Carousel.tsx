@@ -2,18 +2,34 @@ import React from "react";
 import CarouselSlide from "./CarouselSlide";
 import CarouselButton, { CarouselButtonProps } from "./CarouselButton";
 import "./style.css";
+import ScreenWidthProvider, { useScreenWidth } from "../contexts/ScreenWidth";
 
 export interface CarouselProps extends React.HTMLAttributes<HTMLDivElement> {
   options?: CarouselOptions;
 }
 
 export interface CarouselOptions {
+  default?: CarouselStyle;
+  mediaQueries?: CarouselMediaQueries;
+}
+
+export interface CarouselStyle {
   slidesPerPage?: number;
   spacing?: number;
   justifyContent?: "flex-start" | "center" | "flex-end" | "space-around";
-};
+}
 
-export default function Carousel({ children, options, ...props }: CarouselProps) {
+export interface CarouselMediaQueries {
+  [minWidth: number]: CarouselStyle;
+}
+
+function Carousel({
+  children,
+  options = { default: { slidesPerPage: 1 } },
+  ...props
+}: CarouselProps) {
+  const { width: screenWidth } = useScreenWidth();
+  const [style, setStyle] = React.useState<CarouselStyle>(options?.default!);
   const slides = React.useRef<HTMLDivElement>(null);
 
   const filterSlides = (() =>
@@ -26,7 +42,7 @@ export default function Carousel({ children, options, ...props }: CarouselProps)
   const pages = (() => {
     const pages = [];
     let start = 0;
-    const count = options?.slidesPerPage ?? filterSlides?.length!;
+    const count = style?.slidesPerPage ?? filterSlides?.length!;
     while (start <= filterSlides?.length! - count) {
       pages.push(filterSlides?.slice(start, (start += count)));
     }
@@ -47,6 +63,18 @@ export default function Carousel({ children, options, ...props }: CarouselProps)
       return null;
     }))();
 
+  function setAppropriateStyle() {
+    let newStyle = options.default;
+    const minWidths = Object.keys(options?.mediaQueries!).map((width) =>
+      parseInt(width)
+    );
+    for (const width of minWidths) {
+      if (width <= screenWidth) {
+        newStyle = options?.mediaQueries![width] ?? options.default;
+      }
+    }
+    setStyle(newStyle!);
+  }
   function next() {
     slides.current?.scrollBy({
       left: slides.current.clientWidth,
@@ -60,20 +88,23 @@ export default function Carousel({ children, options, ...props }: CarouselProps)
     });
   }
 
+  React.useEffect(() => {
+    setAppropriateStyle();
+  }, [screenWidth]);
   return (
-    <div /*className={styles.carousel}*/ {...props}>
+    <div className="carousel" {...props}>
       <div
         ref={slides}
         className="slides"
-        style={{ gap: `${options?.spacing}px` }}
+        style={{ gap: `${style?.spacing}px` }}
       >
         {pages.map((page, index) => (
           <div
             key={index}
             className="page"
             style={{
-              gap: `${options?.spacing}px`,
-              justifyContent: options?.justifyContent,
+              gap: `${style?.spacing}px`,
+              justifyContent: style?.justifyContent,
             }}
           >
             {page}
@@ -84,3 +115,9 @@ export default function Carousel({ children, options, ...props }: CarouselProps)
     </div>
   );
 }
+
+export default ({ ...props }: CarouselProps) => (
+  <ScreenWidthProvider>
+    <Carousel {...props} />
+  </ScreenWidthProvider>
+);

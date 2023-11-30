@@ -1,0 +1,29 @@
+/* style.module.css */
+
+.carousel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.slides {
+  width: 100%;
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+}
+
+.slides::-webkit-scrollbar {
+  display: none;
+}
+
+.page {
+  width: 100%;
+  overflow-x: hidden;
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  display: flex;
+}
+
+

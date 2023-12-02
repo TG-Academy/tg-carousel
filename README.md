@@ -54,7 +54,7 @@ function App() {
         }}
       >
         {/* Your CarouselSlides with custom Card components */}
-        <CarouselSlide className="slide">
+        <CarouselSlide>
           <Card
             image="/1.jpg"
             title="First Gaming Setup"

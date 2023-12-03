@@ -1,16 +1,16 @@
 {
   "name": "@tg-academy/carousel",
   "description": "A custom react component library for component sliding, it gives the ability to fully customize the sliding buttons.",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "default": "./dist/index.js",
       "import": "./dist/index.js",
       "require": "./dist/index.mjs",
-      "types": "./dist/index.d.ts"
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
     },
     "./css": "./dist/style.css"
   },

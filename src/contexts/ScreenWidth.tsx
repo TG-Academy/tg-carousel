@@ -13,11 +13,13 @@ interface ProviderProps {
 export default function ScreenWidthProvider({ children }: ProviderProps) {
   const [width, setWidth] = React.useState(window?.innerWidth);
   React.useEffect(() => {
-    const widthListener = () => {
-      setWidth(window.innerWidth);
-    };
-    window?.addEventListener("resize", widthListener);
-    return () => window?.removeEventListener("resize", widthListener);
+    if (window) {
+      const widthListener = () => {
+        setWidth(window.innerWidth);
+      };
+      window.addEventListener("resize", widthListener);
+      return () => window.removeEventListener("resize", widthListener);
+    }
   }, []);
   return (
     <ScreenWidthContext.Provider value={{ width }}>

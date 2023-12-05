@@ -11,7 +11,9 @@ interface ProviderProps {
   children: React.ReactNode;
 }
 export default function ScreenWidthProvider({ children }: ProviderProps) {
-  const [width, setWidth] = React.useState(window?.innerWidth);
+  const [width, setWidth] = React.useState(() =>
+    window ? window?.innerWidth : 0
+  );
   React.useEffect(() => {
     if (window) {
       const widthListener = () => {

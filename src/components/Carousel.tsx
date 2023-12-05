@@ -25,7 +25,7 @@ export interface CarouselMediaQueries {
 
 function Carousel({
   children,
-  options = { default: { slidesPerPage: 1 } },
+  options = { default: { slidesPerPage: 1 }, mediaQueries: {} },
   ...props
 }: CarouselProps) {
   const { width: screenWidth } = useScreenWidth();
@@ -42,7 +42,7 @@ function Carousel({
   const pages = (() => {
     const pages = [];
     let start = 0;
-    const count = style?.slidesPerPage ?? filterSlides?.length!;
+    const count = style?.slidesPerPage ?? filterSlides?.length ?? 0;
     while (start <= filterSlides?.length! - count) {
       pages.push(filterSlides?.slice(start, (start += count)));
     }
@@ -64,16 +64,18 @@ function Carousel({
     }))();
 
   function setAppropriateStyle() {
-    let newStyle = options.default;
-    const minWidths = Object.keys(options?.mediaQueries!).map((width) =>
-      parseInt(width)
-    );
+    const { default: defaultStyle = {}, mediaQueries = {} } = options;
+
+    let newStyle = defaultStyle;
+    const minWidths = Object.keys(mediaQueries).map((width) => parseInt(width));
+
     for (const width of minWidths) {
       if (width <= screenWidth) {
-        newStyle = options?.mediaQueries![width] ?? options.default;
+        newStyle = mediaQueries[width] ?? defaultStyle;
       }
     }
-    setStyle(newStyle!);
+
+    setStyle(newStyle);
   }
   function next() {
     slides.current?.scrollBy({
